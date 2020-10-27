@@ -42,14 +42,17 @@ URL:              https://github.com/intel/%{name}
 Source0:          https://github.com/intel/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires:    systemd gcc make autoconf automake libtool systemd-devel openssl-devel zlib-devel
 Requires(pre):    shadow-utils
+# Upstream ticket to remove bundled implementation of libcrypto:
+# https://github.com/intel/qatlib/issues/2
+Provides:         bundled(libcrypto) = 1.1.1c
 
 %{?systemd_requires}
 
 %description
 Intel QuickAssist Technology (Intel QAT) provides hardware acceleration
-for offloading security, authentication and
-compression services from the CPU, thus significantly increasing
-the performance and efficiency of standard platform solutions.
+for offloading security, authentication and compression services from the
+CPU, thus significantly increasing the performance and efficiency of
+standard platform solutions.
 
 Its services include symmetric encryption and authentication,
 asymmetric encryption, digital signatures, RSA, DH and ECC, and
@@ -74,6 +77,7 @@ autoreconf -vif
 %configure
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+sed -i -e 's! -shared ! -Wl,--as-needed\0!g' libtool
 %make_build
 
 %install
@@ -155,7 +159,7 @@ exit 0
 %{_includedir}/qat
 
 %changelog
-* Tue Oct 20 2020 Giovanni Cabiddu <giovanni.cabiddu@intel.com> - 20.08.0-1
+* Fri Oct 23 2020 Giovanni Cabiddu <giovanni.cabiddu@intel.com> - 20.08.0-1
 - Fixes to spec from first round of review
 
 * Mon Aug 10 2020 Mateusz Polrola <mateuszx.potrola@intel.com> - 20.08.0
