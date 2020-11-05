@@ -11,6 +11,9 @@ URL:              https://github.com/intel/%{name}
 Source0:          https://github.com/intel/%{name}/archive/%{version}/%{name}-%{version}.tar.gz
 BuildRequires:    systemd gcc make autoconf automake libtool systemd-devel openssl-devel zlib-devel
 Requires(pre):    shadow-utils
+# Exclude aarch64 and s390x due to broken build
+ExcludeArch:      aarch64
+ExcludeArch:      s390x
 # Upstream ticket to remove bundled implementation of libcrypto:
 # https://github.com/intel/qatlib/issues/2
 Provides:         bundled(openssl) = 1.1.1c
