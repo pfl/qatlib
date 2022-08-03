@@ -220,7 +220,9 @@ CpaStatus SalCtrl_GetEnabledServices(icp_accel_dev_t *device,
 #endif
                 if (strncmp(token, "dc", strlen("dc")) == 0)
                 {
+#ifdef HAVE_COMPRESSION
                     *pEnabledServices |= SAL_SERVICE_TYPE_COMPRESSION;
+#endif
                     break;
                 }
                 if (strncmp(token, "inline", strlen("inline")) == 0)
@@ -329,6 +331,7 @@ CpaStatus SalCtrl_GetSupportedServices(icp_accel_dev_t *device,
             }
         }
 #endif
+#ifdef HAVE_COMPRESSION
         if (SalCtrl_IsServiceEnabled(enabled_services,
                                      SAL_SERVICE_TYPE_COMPRESSION))
         {
@@ -338,6 +341,7 @@ CpaStatus SalCtrl_GetSupportedServices(icp_accel_dev_t *device,
                 status = CPA_STATUS_FAIL;
             }
         }
+#endif
     }
 
     return status;

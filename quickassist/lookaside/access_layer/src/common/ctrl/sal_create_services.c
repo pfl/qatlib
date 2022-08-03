@@ -142,6 +142,7 @@ CpaStatus SalCtrl_ServiceCreate(sal_service_type_t serviceType,
             return CPA_STATUS_SUCCESS;
         }
 #endif
+#ifdef HAVE_COMPRESSION
         case SAL_SERVICE_TYPE_COMPRESSION:
         {
             pCompression_service =
@@ -181,6 +182,7 @@ CpaStatus SalCtrl_ServiceCreate(sal_service_type_t serviceType,
             *(ppInst) = &(pCompression_service->generic_service_info);
             return CPA_STATUS_SUCCESS;
         }
+#endif
 
         default:
         {

@@ -1904,7 +1904,10 @@ void sampleRsaThreadSetup(single_thread_test_data_t *testSetup)
 #ifdef SC_DEV_INFO_ENABLED
     CpaDeviceInfo deviceInfo = {0};
 #endif
+
+#ifdef HAVE_COMPRESSION
     testSetup->passCriteria = getPassCriteria();
+#endif
 
     /*this barrier is to halt this thread when run in user space context, the
      * startThreads function releases this barrier, in kernel space it does

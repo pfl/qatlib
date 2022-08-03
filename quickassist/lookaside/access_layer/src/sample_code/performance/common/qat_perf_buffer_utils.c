@@ -592,9 +592,11 @@ CpaPhysicalAddr virtAddrToDevAddr(void *pVirtAddr,
             status = cpaCyInstanceGetInfo2(instanceHandle, &instanceInfo);
             break;
 #endif
+#ifdef HAVE_COMPRESSION
         case CPA_ACC_SVC_TYPE_DATA_COMPRESSION:
             status = cpaDcInstanceGetInfo2(instanceHandle, &instanceInfo);
             break;
+#endif
         default:
             status = CPA_STATUS_UNSUPPORTED;
     }

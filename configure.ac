@@ -124,8 +124,9 @@ fi
 # Check for yasm
 AC_CHECK_PROG(YASM, yasm, yes , no)
 if test "$YASM" = "no"; then
-    AC_MSG_ERROR([yasm required])
+    AC_MSG_NOTICE([yasm not found, continuing without compression support])
 fi
+AM_CONDITIONAL([HAVE_COMPRESSION], [test x$YASM != xno])
 
 # Check location of systemd unit files
 AC_ARG_WITH([systemdsystemunitdir],

@@ -1327,7 +1327,9 @@ void sampleSymmetricPerformance(single_thread_test_data_t *testSetup)
     CpaInstanceHandle *cyInstances = NULL;
     CpaInstanceInfo2 instanceInfo = {0};
 
+#ifdef HAVE_COMPRESSION
     testSetup->passCriteria = getPassCriteria();
+#endif
 
     memset(&symTestSetup, 0, sizeof(symmetric_test_params_t));
 

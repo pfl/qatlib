@@ -1077,6 +1077,7 @@ static int sampleCodeEventPoll(CpaInstanceHandle instanceHandle,
         pServiceStarted = &cy_service_started_g;
     }
 #endif
+#ifdef HAVE_COMPRESSION
     if (accelServieType == CPA_ACC_SVC_TYPE_DATA_COMPRESSION)
     {
         getFileDescriptorFn = icp_sal_DcGetFileDescriptor;
@@ -1084,6 +1085,7 @@ static int sampleCodeEventPoll(CpaInstanceHandle instanceHandle,
         putFileDescriptorFn = icp_sal_DcPutFileDescriptor;
         pServiceStarted = &dc_service_started_g;
     }
+#endif
     if (getFileDescriptorFn == NULL || pollInstanceFn == NULL ||
         putFileDescriptorFn == NULL)
     {

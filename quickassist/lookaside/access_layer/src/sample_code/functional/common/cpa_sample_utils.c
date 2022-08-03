@@ -204,6 +204,7 @@ void sampleCyStopPolling(void)
 }
 #endif
 
+#ifdef HAVE_COMPRESSION
 /*
  * This function returns a handle to an instance of the data
  * compression API.  It does this by querying the API for all
@@ -281,4 +282,5 @@ void sampleDcStopPolling(void)
     gPollingDc = 0;
     OS_SLEEP(10);
 }
+#endif
 

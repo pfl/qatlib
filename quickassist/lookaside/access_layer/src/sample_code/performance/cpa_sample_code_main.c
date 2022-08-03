@@ -141,7 +141,9 @@ option_t optArray[MAX_NUMOPT] = {
     {"useStaticPrime", 1},
     {"getLatency", 0},
     {"getOffloadCost", 0},
+#ifdef HAVE_COMPRESSION
     {"includeLZ4", DEFAULT_INCLUDE_LZ4},
+#endif
     {"compOnly", 0},
     {"verboseOutput", 1}};
 
@@ -1701,7 +1703,7 @@ int main(int argc, char *argv[])
                     retStatus = CPA_STATUS_FAIL;
                 }
             }
-#ifdef USER_SPACE
+#ifdef USER_SPACE && HAVE_COMPRESSION
 #if DC_API_VERSION_AT_LEAST(3, 1)
             if (includeLZ4 == 1)
             {

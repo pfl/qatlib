@@ -39,11 +39,9 @@ if SAMPLES
 
 COMMON_SAMPLE_CFLAGS = -D USER_SPACE \
 		       -D_GNU_SOURCE \
-		       -DSC_ENABLE_DYNAMIC_COMPRESSION \
 		       -DWITH_CMDRV \
 		       -DWITH_UPSTREAM \
 		       -DDO_CRYPTO \
-		       -DINCLUDE_COMPRESSION \
 		       -Wno-deprecated-declarations
 
 COMMON_SAMPLE_INCLUDES = -I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance/framework \
@@ -84,21 +82,8 @@ cpa_sample_code_SOURCES = \
 	quickassist/lookaside/access_layer/src/sample_code/performance/crypto/cpa_sample_code_rsa_kpt2_perf.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/crypto/cpa_sample_code_ecdsa_kpt2_perf.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/common/qat_perf_buffer_utils.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_dc_utils.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_dc_dp.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_utils.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_e2e.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_zlib.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_main.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/common/qat_perf_latency.c \
 	quickassist/lookaside/access_layer/src/sample_code/busy_loop/busy_loop.c
-cpa_sample_code_CFLAGS = -I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance \
-	-I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance/crypto/ \
-	$(COMMON_SAMPLE_INCLUDES) \
-	$(COMMON_SAMPLE_CFLAGS) \
-	$(COMMON_FLAGS) \
-	-DSAMPLE_CODE_CORPUS_PATH="\"$(datadir)/qat/\""
-cpa_sample_code_LDADD = $(COMMON_SAMPLE_LDFLAGS)
 
 noinst_LTLIBRARIES += libcpa_sample_code_s.la
 libcpa_sample_code_s_la_SOURCES = \
@@ -124,14 +109,39 @@ libcpa_sample_code_s_la_SOURCES = \
 	quickassist/lookaside/access_layer/src/sample_code/performance/crypto/cpa_sample_code_rsa_kpt2_perf.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/crypto/cpa_sample_code_ecdsa_kpt2_perf.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/common/qat_perf_buffer_utils.c \
+	quickassist/lookaside/access_layer/src/sample_code/performance/common/qat_perf_latency.c \
+	quickassist/lookaside/access_layer/src/sample_code/busy_loop/busy_loop.c
+
+if HAVE_COMPRESSION
+COMMON_SAMPLE_CFLAGS += \
+			-DSC_ENABLE_DYNAMIC_COMPRESSION \
+			-DINCLUDE_COMPRESSION
+
+cpa_sample_code_SOURCES += \
 	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_dc_utils.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_dc_dp.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_utils.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_e2e.c \
 	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_zlib.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_main.c \
-	quickassist/lookaside/access_layer/src/sample_code/performance/common/qat_perf_latency.c \
-	quickassist/lookaside/access_layer/src/sample_code/busy_loop/busy_loop.c
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_main.c 
+
+libcpa_sample_code_s_la_SOURCES += \
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_dc_utils.c \
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_dc_dp.c \
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_utils.c \
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_e2e.c \
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/cpa_sample_code_zlib.c \
+	quickassist/lookaside/access_layer/src/sample_code/performance/compression/qat_compression_main.c
+endif
+
+cpa_sample_code_CFLAGS = -I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance \
+	-I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance/crypto/ \
+	$(COMMON_SAMPLE_INCLUDES) \
+	$(COMMON_SAMPLE_CFLAGS) \
+	$(COMMON_FLAGS) \
+	-DSAMPLE_CODE_CORPUS_PATH="\"$(datadir)/qat/\""
+cpa_sample_code_LDADD = $(COMMON_SAMPLE_LDFLAGS)
+
 libcpa_sample_code_s_la_CFLAGS = -I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance \
 	-I$(srcdir)/quickassist/lookaside/access_layer/src/sample_code/performance/crypto/ \
 	$(COMMON_SAMPLE_INCLUDES) \
@@ -139,6 +149,7 @@ libcpa_sample_code_s_la_CFLAGS = -I$(srcdir)/quickassist/lookaside/access_layer/
 	$(COMMON_FLAGS) \
 	-DSAMPLE_CODE_CORPUS_PATH="\"$(datadir)/qat/\""
 
+if HAVE_COMPRESSION
 noinst_PROGRAMS += dc_dp_sample
 dc_dp_sample_SOURCES = \
 	quickassist/lookaside/access_layer/src/sample_code/functional/common/cpa_sample_utils.c \
@@ -171,6 +182,7 @@ dc_stateless_multi_op_sample_CFLAGS = -I$(srcdir)/quickassist/lookaside/access_l
 	$(COMMON_SAMPLE_CFLAGS) \
 	$(COMMON_FLAGS)
 dc_stateless_multi_op_sample_LDADD = $(COMMON_SAMPLE_LDFLAGS) libcpa_sample_code_s.la
+endif
 
 noinst_PROGRAMS += algchaining_sample
 algchaining_sample_SOURCES = \

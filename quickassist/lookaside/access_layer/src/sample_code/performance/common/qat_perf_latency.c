@@ -290,6 +290,7 @@ CpaStatus qatLatencyPollForResponses(perf_data_t *performanceStats,
                     }
                     else
                     {
+#ifdef HAVE_COMPRESSION
                         if (instanceIsDP)
                         {
                             icp_sal_DcPollDpInstance(instanceHandle,
@@ -300,6 +301,11 @@ CpaStatus qatLatencyPollForResponses(perf_data_t *performanceStats,
                             icp_sal_DcPollInstance(instanceHandle,
                                                    READ_ALL_RESPONSES);
                         }
+#else
+                        PRINT_ERR(
+                            "Compression is not enabled. Polling is impossible.\n");
+                        status = CPA_STATUS_FAIL;
+#endif
                     }
                 }
             }
